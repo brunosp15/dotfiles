@@ -3,6 +3,7 @@ alias reload="source ~/.config/zsh/.zshrc"
 alias config="nvim ~/.config"
 alias i="sudo pacman -S"
 
+alias gst="git status"
 
 setopt SHAREHISTORY
 setopt HIST_IGNORE_ALL_DUPS
