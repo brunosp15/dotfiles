@@ -1,150 +1,64 @@
-/* colors defined at top for easy configuring */
-@define-color background #2C2A24;
-@define-color second-background #3A372F;
-@define-color text #DDD5C4;
-@define-color borders #A0907A;
-@define-color focused #D08B57;
-@define-color focused2 #BFAA80;
-@define-color color1 #7699A3;
-@define-color color2 #8D7AAE;
-@define-color color3 #78997A;
-@define-color urgent #B05A5A;
-
+@import "colors.css";
 
 * {
-  font-family: "JetBrainsMono Nerd Font";
-  font-size: 14px;
+  all: unset;
+  font-family: "JetBrainsMono Nerd Font Propo";
+}
+
+tooltip {
+  background-color: @bg1;
+  color: @fg;
+  padding: 10px;
+  margin: 10px;
+  border-radius: 12px;
 }
 
 
-window#waybar {
-  background-color: @background;
-  border-bottom: 0;
-  color: @text;
-  transition: background-color 0.5s;
+.modules-left,
+.modules-center,
+.modules-right{
+  background-color: @bg1;
+  border-radius: 8px;
+  padding: 0px 12px;
+  color: @fg
 }
 
-window#waybar.hidden {
-  opacity: 0.2;
+#clock {
+ font-weight: 600;
 }
 
-window#waybar.empty #window {
-  background-color: transparent;
+#workspaces {
 }
 
-
-.modules-left {
-  margin: 0 0 0 10px;
-}
-
-.modules-center {
-}
-
-.modules-right {
-  margin: 0 10px 0 0;
-}
-
-
-#custom-arch,
-#custom-themeswitcher {
-  padding-right: 10px;
-  padding-left: 5px;
-  font-size: 15px;
-}
-
-
-/* workspace pannel */
 #workspaces button {
-  min-width: 0;
-  padding: 0 8px 0 8px;
-  background-color: transparent;
-  color: @text;
-  border-radius: 0;
+ border-radius: 99px;
+ margin: 8px 4px;
+ padding: 0px 8px;
 }
 
-#workspaces button:hover {
-  background-color: @second-background;
+
+#workspaces button.empty {
+ color: @grey0;
 }
 
 #workspaces button.active {
-  color: @focused2;
-  background-color: @second-background;
+ background-color: @green;
+ color: @bg1;
+ font-weight: 500;
 }
 
-#workspaces button.urgent {
-  background-color: @urgent;
-}
-
-.module-left>widget:first-child>#workspaces {
-  margin-left: 0;
-}
-
-.modules-right>widget:last-child>#workspaces {
-  margin-right: 0;
-}
-
-/* media player */
-#mpris {
-  margin: 0 0 0 5px;
-  padding: 0 9px;
-  color: @text;
-}
-
-
-
-/* center module  */
-#window {
-  padding: 0 5px;
-}
-
-/* Right Island */
-
-/* module general styles */
-#clock,
-#cpu,
-#memory,
-#custom-clipboard,
-#custom-bluetooth,
 #network {
-  padding: 0 10px;
+  padding: 0px 12px;
+}
+#cpu {
+ padding: 0px 12px;
+
 }
 
-#clock:hover,
-#cpu:hover,
-#memory:hover,
-#custom-clipboard:hover,
-#custom-bluetooth:hover,
-#network:hover,
-#idle_inhibitor:hover,
-#custom-swaync:hover,
-#backlight:hover,
-#custom-arch:hover,
-#custom-themeswitcher:hover,
-#wireplumber:hover {
-  color: @color1;
-}
-
-#idle_inhibitor {
-  padding: 0 10px 0 0;
+#memory {
+ padding: 0px 12px;
 }
 
 #wireplumber {
-  padding: 0 5px;
 }
 
-#wireplumber.muted {
-  background-color: @color2;
-}
-
-#custom-swaync {
-  padding: 0 10px 0 5px;
-  font-size: 16px;
-  color: @text;
-}
-
-@keyframes blink {
-  to {
-    background-color: @second-background;
-    color: @text;
-  }
-}
