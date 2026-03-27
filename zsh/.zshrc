@@ -3,6 +3,7 @@ alias reload="source ~/.config/zsh/.zshrc"
 alias config="nvim ~/.config"
 alias i="sudo pacman -S"
 
+alias n="nvim"
 alias gst="git status"
 
 setopt SHAREHISTORY
