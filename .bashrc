@@ -19,7 +19,8 @@ alias i='sudo pacman -S'
 alias ls='ls -la --color'
 alias cd='z'
 
-alias gst = 'git status'
+alias gst='git status'
+
  
 HISTSIZE=10000
 HISTFILESIZE=20000
