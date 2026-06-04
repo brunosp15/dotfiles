@@ -23,6 +23,7 @@ vim.opt.splitright = true
 vim.opt.ignorecase = true
 vim.opt.smartcase = true
 vim.opt.laststatus = 3
+vim.opt.cmdheight = 0
 
 vim.opt.swapfile = false
 vim.opt.backup = false
@@ -69,6 +70,7 @@ vim.pack.add({
     "https://github.com/nvim-lua/plenary.nvim",
     "https://github.com/nvim-telescope/telescope.nvim",
     "https://github.com/norcalli/nvim-colorizer.lua",
+    "https://github.com/lewis6991/gitsigns.nvim",
 })
 
 -- ============================================================
@@ -96,6 +98,11 @@ require('colorizer').setup()
 -- Neo tree
 require("neo-tree").setup({
     close_if_last_window = true, -- Close Neo-tree if it is the last window left in the tab
+    filesystem = {
+        follow_current_file = {
+            enabled = true,
+        }
+    }
 })
 
 -- Blink
