@@ -134,7 +134,7 @@ require("blink.cmp").setup({
 vim.keymap.set('n', '<Esc>', '<cmd>nohlsearch<CR>', { desc = 'Clear search highlight' })
 vim.keymap.set('n', '<leader>w', vim.cmd.write, { desc = "Write file" })
 vim.keymap.set('n', '<leader>r', vim.cmd.restart, { desc = "Restart Neovim" })
-vim.keymap.set("n", "<leader>f", "<Cmd>Neotree toggle<CR>", { desc = "Neo tree" })
+vim.keymap.set("n", "<leader>t", "<Cmd>Neotree toggle<CR>", { desc = "Neo tree" })
 
 local diag = vim.diagnostic;
 local opts = { severity = diag.severity.ERROR }
