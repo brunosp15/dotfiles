@@ -47,19 +47,28 @@
   border: 0px solid alpha(@foreground, 0.64);
   border-bottom-width: 4px;
 }
-
-#cpu,
-#idle_inhibitor,
-#battery,
-#custom-screenrecording-indicator,
-#custom-update {
-  min-width: 12px;
-  margin: 0 7.5px;
+#memory.warning {
+    color: yellow;
 }
 
-#custom-gamemode {
-  margin-left: 2px;
-  margin-right: 8px;
+#memory.high {
+    color: orange;
+}
+
+#memory.critical {
+    color: red;
+}
+
+#cpu.warning {
+    color: yellow;
+}
+
+#cpu.high {
+    color: orange;
+}
+
+#cpu.critical {
+    color: red;
 }
 
 #pulseaudio {
@@ -75,12 +84,6 @@
   margin-right: 2px;
 }
 
-#custom-idle-indicator,
-#custom-notification-silencing-indicator {
-  margin-right: 2px;
-  min-width: 15px;
-}
-
 #network {
   margin-right: 10px;
   margin-left: 6px;
@@ -94,38 +97,12 @@ tooltip {
   padding: 2px;
 }
 
-#custom-update {
-  font-size: 10px;
-}
-
 #clock {
   margin-left: 8.75px;
 }
 
 .hidden {
   opacity: 0;
-}
-
-#custom-screenrecording-indicator {
-  min-width: 12px;
-  margin-left: 8.75px;
-  font-size: 10px;
-}
-
-#custom-screenrecording-indicator.active {
-  color: #a55555;
-}
-
-#custom-omarchy {
-  background-color: alpha(@foreground, 0.2);
-  /* border-radius: 2px; */
-  padding-right: 1.5px;
-  padding-left: 0px;
-  min-width: 24px;
-  margin: 0 1px;
-  margin-right: 4px; 
-  /* margin-top: 1px; */
-  /* margin-bottom: 1px; */
 }
 
 #mpris {

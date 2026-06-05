@@ -1,38 +1,47 @@
-
 hl.window_rule({
-	-- Ignore maximize requests from all apps. You'll probably like this.
-	name = "suppress-maximize-events",
-	match = { class = ".*" },
+    -- Ignore maximize requests from all apps. You'll probably like this.
+    name = "suppress-maximize-events",
+    match = { class = ".*" },
 
-	suppress_event = "maximize",
+    suppress_event = "maximize",
 })
 
 hl.window_rule({
-	-- Fix some dragging issues with XWayland
-	name = "fix-xwayland-drags",
-	match = {
-		class = "^$",
-		title = "^$",
-		xwayland = true,
-		float = true,
-		fullscreen = false,
-		pin = false,
-	},
+    -- Fix some dragging issues with XWayland
+    name = "fix-xwayland-drags",
+    match = {
+        class = "^$",
+        title = "^$",
+        xwayland = true,
+        float = true,
+        fullscreen = false,
+        pin = false,
+    },
 
-	no_focus = true,
+    no_focus = true,
 })
 
 -- Hyprland-run windowrule
 hl.window_rule({
-	name = "move-hyprland-run",
-	match = { class = "hyprland-run" },
+    name = "move-hyprland-run",
+    match = { class = "hyprland-run" },
 
-	move = "20 monitor_h-120",
-	float = true,
+    move = "20 monitor_h-120",
+    float = true,
 })
 
 hl.window_rule({
-	name = "1password",
-	match = { class = "1password" },
-	float = true,
+    name = "1password",
+    match = { class = "1password" },
+    float = true,
+})
+
+hl.window_rule({
+    match = {
+        title = "^btop%-popup$",
+    },
+
+    float = true,
+    size = { 1000, 700 },
+    center = true,
 })

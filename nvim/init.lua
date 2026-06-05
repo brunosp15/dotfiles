@@ -1,54 +1,67 @@
-vim.g.mapleader = ' '
+-- ============================================================
+-- Options
+-- ============================================================
+-- Leader
+vim.g.mapleader = ' ' -- Set <Leader> key to Space
+
+-- Editor
+vim.opt.number = true         -- Show absolute line numbers
+vim.opt.relativenumber = true -- Show relative line numbers
+vim.opt.wrap = false          -- Disable line wrapping
+vim.opt.textwidth = 100       -- Preferred maximum line length for formatting
+vim.opt.wrapmargin = 0        -- Disable wrap margin
+vim.opt.scrolloff = 8         -- Keep 8 lines visible around cursor
+vim.opt.cursorline = true     -- Highlight current line
+
+-- Indentation
+vim.opt.tabstop = 4        -- Number of spaces a tab displays as
+vim.opt.softtabstop = 4    -- Spaces inserted/removed when pressing Tab/Backspace
+vim.opt.shiftwidth = 4     -- Spaces used for indentation commands
+vim.opt.expandtab = true   -- Convert tabs to spaces
+vim.opt.smartindent = true -- Smart auto-indentation
+
+-- Search
+vim.opt.ignorecase = true -- Ignore case when searching
+vim.opt.smartcase = true  -- Override ignorecase if uppercase is used
+
+-- Windows & Splits
+vim.opt.splitbelow = true -- Open horizontal splits below
+vim.opt.splitright = true -- Open vertical splits to the right
+vim.opt.laststatus = 3    -- Use a single global statusline
+vim.o.winbar = "%f"       -- Show current file name in window bar
+
+-- Command Line
+vim.opt.cmdheight = 0                -- Hide command line when not in use
+vim.opt.inccommand = "split"         -- Preview substitutions in a split
+vim.o.wildmode = "longest:full,full" -- Command-line completion behavior
+vim.o.wildoptions = "pum,fuzzy"      -- Popup menu with fuzzy matching
+
+-- Files
+vim.opt.swapfile = false                               -- Disable swap files
+vim.opt.backup = false                                 -- Disable backup files
+vim.opt.undodir = vim.fn.stdpath("data") .. "/undodir" -- Persistent undo location
+vim.opt.undofile = true                                -- Save undo history between sessions
+
+-- UI
+vim.opt.signcolumn = "yes" -- Always show sign column
+vim.opt.guicursor = ""     -- Use block cursor in all modes
+
+-- Clipboard
+vim.opt.clipboard:append("unnamedplus") -- Use system clipboard
+
+-- Netrw
+vim.g.netrw_banner = 0    -- Hide netrw help banner
+vim.g.netrw_liststyle = 3 -- Tree-style directory view
+vim.g.netrw_winsize = 25  -- Netrw window width percentage
+
+-- Performance
+
+vim.opt.updatetime = 300 -- Faster CursorHold events (LSP highlights, etc.)
 
 
-vim.g.netrw_banner = 0
-
-vim.opt.number = true
-vim.opt.relativenumber = true
-
-vim.opt.tabstop = 4
-vim.opt.softtabstop = 4
-vim.opt.shiftwidth = 4
-vim.opt.expandtab = true
-
-vim.opt.wrap = false
-vim.opt.textwidth = 100
-vim.opt.wrapmargin = 0
-vim.opt.smartindent = true
-vim.opt.inccommand = "split"
-
-vim.opt.splitbelow = true
-vim.opt.splitright = true
-
-vim.opt.ignorecase = true
-vim.opt.smartcase = true
-vim.opt.laststatus = 3
-vim.opt.cmdheight = 0
-
-vim.opt.swapfile = false
-vim.opt.backup = false
-vim.opt.undodir = vim.fn.stdpath("data") .. "/undodir"
-vim.opt.undofile = true
-
-
-vim.opt.clipboard:append("unnamedplus")
-vim.opt.guicursor = ""
-vim.opt.scrolloff = 8
-vim.opt.cursorline = true
-
-vim.opt.colorcolumn = "0"
-vim.opt.signcolumn = "yes"
-
-vim.o.wildmode = "longest:full,full"
-vim.o.wildoptions = "pum,fuzzy"
-
-vim.o.winbar = "%f"
-
-vim.g.netrw_banner = 0
-vim.g.netrw_liststyle = 3
-vim.g.netrw_winsize = 25
-
-
+-- ============================================================
+-- PLUGINS
+-- ============================================================
 
 vim.pack.add({
     "https://github.com/bluz71/vim-moonfly-colors",
@@ -195,28 +208,27 @@ vim.api.nvim_create_autocmd("TextYankPost", {
     end,
 })
 
-vim.api.nvim_create_autocmd("CursorHold", {
-    desc = "HighLight variable under cursor ",
-    callback = function()
-        vim.lsp.buf.document_highlight()
-    end,
-})
-
-vim.api.nvim_create_autocmd("CursorMoved", {
-    desc = "Clear highLight variable after moved",
-    callback = function()
-        vim.lsp.buf.clear_references()
-    end,
-})
-
 
 -- ============================================================
 -- LSP AND TREESITTER CONFIGURATION
 -- ============================================================
-require("nvim-treesitter").install({ "c", "lua", "vim", "java" })
+require("nvim-treesitter").install({ "c", "lua", "vim", "java", "json" })
 
 vim.api.nvim_create_autocmd("LspAttach", {
     callback = function(event)
+        local client = vim.lsp.get_client_by_id(event.data.client_id)
+
+        if client:supports_method("textDocument/documentHighlight") then
+            vim.api.nvim_create_autocmd({ "CursorHold", "CursorHoldI" }, {
+                buffer = event.buf,
+                callback = vim.lsp.buf.document_highlight,
+            })
+
+            vim.api.nvim_create_autocmd({ "CursorMoved", "CursorMovedI" }, {
+                buffer = event.buf,
+                callback = vim.lsp.buf.clear_references,
+            })
+        end
         vim.keymap.set("n", "gd", vim.lsp.buf.definition, { desc = "LSP: Go to definition", buffer = event.buf })
         vim.keymap.set("n", "gr", vim.lsp.buf.references, { desc = "LSP: references", buffer = event.buf })
         vim.keymap.set("n", "K", vim.lsp.buf.hover, { desc = "LSP: hover", buffer = event.buf })
@@ -251,7 +263,7 @@ vim.lsp.config("jdtls", {
 
 
 
-vim.lsp.enable({ 'clangd', 'lua_ls', 'jdtls' })
+vim.lsp.enable({ 'clangd', 'lua_ls', 'jdtls', 'jsonls' })
 
 -- ============================================================
 -- DEBUGER CONFIGURATION
