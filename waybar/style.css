@@ -47,28 +47,37 @@
   border: 0px solid alpha(@foreground, 0.64);
   border-bottom-width: 4px;
 }
+
+#memory{
+    color: #8cc85f;
+}
+
 #memory.warning {
-    color: yellow;
+    color: #e3c78a;
 }
 
 #memory.high {
-    color: orange;
+    color:#e39a5f;
 }
 
 #memory.critical {
-    color: red;
+    color: #ff5d5d;
+}
+
+#cpu{
+    color: #8cc85f;
 }
 
 #cpu.warning {
-    color: yellow;
+    color: #e3c78a;
 }
 
 #cpu.high {
-    color: orange;
+    color:#e39a5f;
 }
 
 #cpu.critical {
-    color: red;
+    color: #ff5d5d;
 }
 
 #pulseaudio {
