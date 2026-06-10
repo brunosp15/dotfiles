@@ -123,7 +123,6 @@ require("blink.cmp").setup({
     keymap = {
         preset = "default",
     },
-
     appearance = {
         nerd_font_variant = "mono",
     },
@@ -133,6 +132,9 @@ require("blink.cmp").setup({
             border = "rounded",
         },
 
+        trigger = {
+            show_on_keyword = true,
+        },
         documentation = {
             auto_show = true,
 
@@ -145,6 +147,9 @@ require("blink.cmp").setup({
     sources = {
         default = { "lsp", "path", "buffer" },
     },
+    fuzzy = {
+        implementation = "lua",
+    }
 })
 
 
@@ -292,41 +297,7 @@ dap.configurations.c = {
     },
 }
 
-dapui.setup(
--- {
---     layouts = {
---         {
---             position = "left",
---             size = 40,
---             elements = {
---                 {
---                     id = "scopes",
---                     size = 0.50,
---                     title = "Scopes",
---                 },
---                 {
---                     id = "breakpoints",
---                     size = 0.15,
---                     title = "Breakpoints",
---                 },
---                 {
---                     id = "stacks",
---                     size = 0.20,
---                     title = "Call Stack",
---                 },
---                 {
---                     id = "watches",
---                     size = 0.15,
---                     title = "Watches",
---                 },
---             },
---         },
---     },
---     floating = {
---         border = "rounded",
---     },
--- }
-)
+dapui.setup()
 
 dap.listeners.before.attach.dapui_config = function() dapui.open() end
 dap.listeners.before.launch.dapui_config = function() dapui.open() end
