@@ -115,7 +115,17 @@ require("neo-tree").setup({
         follow_current_file = {
             enabled = true,
         }
-    }
+    },
+    event_handlers = {
+        {
+            event = "file_opened",
+            handler = function()
+                require("neo-tree.command").execute({
+                    action = "close",
+                })
+            end,
+        },
+    },
 })
 
 -- Blink
