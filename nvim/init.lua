@@ -140,10 +140,13 @@ require("blink.cmp").setup({
     completion = {
         menu = {
             border = "rounded",
+            auto_show = true
         },
 
         trigger = {
             show_on_keyword = true,
+            show_on_trigger_character = true,
+            show_on_insert_on_trigger_character = true,
         },
         documentation = {
             auto_show = true,
@@ -164,7 +167,7 @@ require("blink.cmp").setup({
 
 
 -- ============================================================
--- KEY BINDS
+-- KEYBINDS
 -- ============================================================
 vim.keymap.set('n', '<Esc>', '<cmd>nohlsearch<CR>', { desc = 'Clear search highlight' })
 vim.keymap.set('n', '<leader>w', vim.cmd.write, { desc = "Write file" })
@@ -184,8 +187,6 @@ vim.keymap.set("n", "<A-k>", ":m .-2<CR>==", { desc = "Move line up" })
 vim.keymap.set("v", "<A-j>", ":m '>+1<CR>gv=gv", { desc = "Move selection down" })
 vim.keymap.set("v", "<A-k>", ":m '<-2<CR>gv=gv", { desc = "Move selection up" })
 
-vim.keymap.set("i", "jj", "<Esc>", { desc = "Exit insert mode " })
-vim.keymap.set("i", "kk", "<Esc>", { desc = "Exit insert mode " })
 
 -- Debugger
 vim.keymap.set("n", "<F1>", function() dap.toggle_breakpoint() end, { desc = "Debugger toggle breakpoint" })
@@ -200,7 +201,7 @@ vim.keymap.set({ "n", "v" }, "<Leader>de", function() dapWidgets.preview() end, 
 
 -- Telescope
 local builtin = require('telescope.builtin')
-vim.keymap.set('n', '<leader>ff', builtin.find_files, { desc = 'Telescope find files' })
+vim.keymap.set('n', '<leader><leader>', builtin.find_files, { desc = 'Telescope find files' })
 vim.keymap.set('n', '<leader>fg', builtin.live_grep, { desc = 'Telescope live grep' })
 vim.keymap.set('n', '<leader>fb', builtin.buffers, { desc = 'Telescope buffers' })
 vim.keymap.set('n', '<leader>fh', builtin.help_tags, { desc = 'Telescope help tags' })
