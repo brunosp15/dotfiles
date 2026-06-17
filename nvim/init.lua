@@ -27,11 +27,11 @@ vim.opt.smartcase = true  -- Override ignorecase if uppercase is used
 -- Windows & Splits
 vim.opt.splitbelow = true -- Open horizontal splits below
 vim.opt.splitright = true -- Open vertical splits to the right
-vim.opt.laststatus = 3    -- Use a single global statusline
-vim.o.winbar = "%f"       -- Show current file name in window bar
+vim.opt.laststatus = 2    -- Use a single global statusline
+-- vim.o.winbar = "%f"       -- Show current file name in window bar
 
 -- Command Line
-vim.opt.cmdheight = 0                -- Hide command line when not in use
+-- vim.opt.cmdheight = 0                -- Hide command line when not in use
 vim.opt.inccommand = "split"         -- Preview substitutions in a split
 vim.o.wildmode = "longest:full,full" -- Command-line completion behavior
 vim.o.wildoptions = "pum,fuzzy"      -- Popup menu with fuzzy matching
@@ -45,7 +45,11 @@ vim.opt.undofile = true                                -- Save undo history betw
 -- UI
 vim.opt.signcolumn = "yes" -- Always show sign column
 vim.opt.guicursor = ""     -- Use block cursor in all modes
+-- Set the background for the current active buffer/window
+vim.api.nvim_set_hl(0, "Normal", { bg = "#1e1e2e", fg = "#cdd6f4" })
 
+-- Set a dimmer background for non-current (inactive) buffers/windows
+vim.api.nvim_set_hl(0, "NormalNC", { bg = "#181825", fg = "#a6adc8" })
 -- Clipboard
 vim.opt.clipboard:append("unnamedplus") -- Use system clipboard
 
@@ -68,7 +72,7 @@ vim.pack.add({
     "https://github.com/catppuccin/nvim",
     "https://github.com/neovim/nvim-lspconfig",
     "https://github.com/farmergreg/vim-lastplace",
-    "https://github.com/nvim-lualine/lualine.nvim",
+    -- "https://github.com/nvim-lualine/lualine.nvim",
     "https://github.com/saghen/blink.cmp",
     "https://github.com/saghen/blink.lib",
     "https://github.com/mfussenegger/nvim-dap",
@@ -103,7 +107,7 @@ vim.cmd.colorscheme("moonfly")
 -- vim.cmd.colorscheme("catppuccin-nvim")
 
 -- Lua line
-require('lualine').setup()
+-- require('lualine').setup()
 
 -- Colorizer
 require('colorizer').setup()
@@ -189,9 +193,23 @@ vim.keymap.set("v", "<A-k>", ":m '<-2<CR>gv=gv", { desc = "Move selection up" })
 
 
 -- Debugger
+
+local function debug()
+    vim.cmd.write()
+
+    vim.fn.system("./build.sh")
+
+    if vim.v.shell_error ~= 0 then
+        vim.notify("Build failed", vim.log.levels.ERROR)
+        return
+    end
+
+    dap.continue()
+end
+
 vim.keymap.set("n", "<F1>", function() dap.toggle_breakpoint() end, { desc = "Debugger toggle breakpoint" })
 vim.keymap.set("n", "<F4>", function() dap.terminate() end, { desc = "Debugger terminate" })
-vim.keymap.set("n", "<F5>", function() dap.continue() end, { desc = "Debugger continue" })
+vim.keymap.set("n", "<F5>", debug, { desc = "Build and debug" })
 vim.keymap.set("n", "<F6>", function() dap.pause() end, { desc = "Debugger pause" })
 vim.keymap.set("n", "<F10>", function() dap.step_over() end, { desc = "Debugeer step over" })
 vim.keymap.set("n", "<F11>", function() dap.step_into() end, { desc = "Debugeer step into" })
@@ -252,11 +270,17 @@ vim.api.nvim_create_autocmd("LspAttach", {
     end,
 })
 
+local capabilities = require("blink.cmp").get_lsp_capabilities()
+
+vim.lsp.config("*", {
+    capabilities = capabilities,
+})
+
 
 vim.lsp.config("lua_ls", {
     settings = {
         Lua = {
-            diagnostics = { globals = { "vim" } },
+            diagnostics = { globals = { "vim", "hl" } },
         },
     },
 }
@@ -285,26 +309,35 @@ vim.lsp.enable({ 'clangd', 'lua_ls', 'jdtls', 'jsonls' })
 -- DEBUGER CONFIGURATION
 -- ============================================================
 
+
+-- dap.defaults.fallback.force_external_terminal = true
+--
+-- dap.defaults.fallback.external_terminal = {
+--     command = "ghostty",
+--     args = { "-e" },
+-- }
+
 dap.adapters.gdb = {
     type = "executable",
     command = "gdb",
     args = { "--interpreter=dap", "--quiet" },
 }
 
+dap.adapters.codelldb = {
+    type = "executable",
+    command = "codelldb",
+}
+
 dap.configurations.c = {
     {
         name = "Launch",
-        type = "gdb",
+        type = "codelldb",
         request = "launch",
-        program = function()
-            print("Compiling...")
-            local result = vim.fn.system("gcc -g chess2.c -o chess -lraylib -lGL -lm -lpthread -ldl -lrt -lX11")
-            print(result)
-            return vim.fn.getcwd() .. "/chess"
-        end,
-
+        program = vim.fn.getcwd() .. "/build/main",
         cwd = "${workspaceFolder}",
-        stopAtBeginningOfMainSubprogram = false,
+        stopOnEntry = false,
+
+        runInTerminal = true,
     },
 }
 
@@ -329,4 +362,25 @@ require("nvim-dap-virtual-text").setup({
     enabled = true,
     enabled_commands = true,
     virt_text_pos = "eol",
+})
+
+require("dapui").setup({
+    layouts = {
+        {
+            position = "left",
+            size = 40,
+            elements = {
+                { id = "scopes",      size = 0.4 },
+                { id = "breakpoints", size = 0.3 },
+                { id = "watches",     size = 0.3 },
+            },
+        },
+        {
+            position = "bottom",
+            size = 15,
+            elements = {
+                { id = "console", size = 1 }
+            }
+        }
+    },
 })
