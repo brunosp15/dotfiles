@@ -196,13 +196,13 @@ vim.keymap.set("v", "<A-k>", ":m '<-2<CR>gv=gv", { desc = "Move selection up" })
 
 local function debug()
     vim.cmd.write()
-
+    vim.notify("Building...")
     vim.fn.system("./build.sh")
-
     if vim.v.shell_error ~= 0 then
         vim.notify("Build failed", vim.log.levels.ERROR)
         return
     end
+    vim.notify("Running...")
 
     dap.continue()
 end
